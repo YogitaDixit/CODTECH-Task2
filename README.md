@@ -1,4 +1,6 @@
 # Overview
+![Screenshot 2024-08-21 211156](https://github.com/user-attachments/assets/5f7258cb-fab0-4412-923f-5e3a6430975a)
+
 ![Screenshot 2024-08-21 211226](https://github.com/user-attachments/assets/ecbb76bd-5504-4ee6-805c-03fe9888e2ad)
 
 This e-commerce platform is a basic web application built using HTML, CSS, and JavaScript. It simulates the core functionalities of an online shopping website, enabling users to browse products, add items to a cart, make purchases, and manage their orders. Here's an overview of the key components and features:
