@@ -1,0 +1,369 @@
+e-commerce-platform/
+│
+├── index.html
+├── style.css
+├── script.js
+├── products.json
+├── cart.html
+├── checkout.html<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My E-Commerce Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My E-Commerce Platform</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="orders.html">My Orders</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search products...">
+        </div>
+    </header>
+
+    <main>
+        <div class="filters">
+            <h2>Filters</h2>
+            <label>
+                <input type="checkbox" id="filter-category1"> Category 1
+            </label>
+            <label>
+                <input type="checkbox" id="filter-category2"> Category 2
+            </label>
+        </div><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My E-Commerce Platform - Cart</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="orders.html">My Orders</a></li>
+            </ul>
+        </nav>
+    </header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My E-Commerce Platform - Checkout</h1>
+    </header>
+
+    <main>
+        <form id="payment-form">
+            <h2>Payment Information</h2>
+            <label for="card-number">Card Number:</label>
+            <input type="text" id="card-number" required>
+
+            <label for="expiry-date">Expiry Date:</label><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My E-Commerce Platform - My Orders</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.search-bar {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.search-bar input {
+    padding: 5px;
+    width: 50%;
+}
+
+main {
+    display: flex;
+    padding: 20px;
+}
+
+.filters {
+    width: 20%;
+    background-color: #fff;
+    padding: 10px;
+    margin-right: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#product-list {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-item {
+    background-color: #fff;
+    margin: 10px;
+    padding: 15px;
+    width: 30%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}document.addEventListener('DOMContentLoaded', () => {
+    const productList = document.getElementById('product-list');
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+    fetch('products.json')
+        .then(response => response.json())
+        .then(products => {
+            displayProducts(products);
+        });
+
+    function displayProducts(products) {
+        productList.innerHTML = '';
+        products.forEach(product => {
+            const productItem = document.createElement('div');
+            productItem.className = 'product-item';
+            productItem.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <p>$${product.price}</p>
+                <button onclick="addToCart(${product.id})">Add to Cart</button>
+            `;
+            productList.appendChild(productItem);
+        });
+    }
+
+    window.addToCart = function (id) {
+        const product = products.find(p => p.id === id);
+        cartItems.push(product);
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        alert('Product added to cart!');
+    };
+
+    if (window.location.pathname.endsWith('cart.html')) {
+        const cartContainer = document.getElementById('cart-items');
+        cartItems.forEach(item => {
+            const cartItem = document.createElement('div');
+            cartItem.innerHTML = `
+                <h3>${item.name}</h3>
+                <p>$${item.price}</p>
+            `;
+            cartContainer.appendChild(cartItem);
+        });
+    }
+
+    if (window.location.pathname.endsWith('checkout.html')) {
+        const paymentForm = document.getElementById('payment-form');
+        paymentForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            orders.push(...cartItems);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            localStorage.removeItem('cart');
+            alert('Order placed successfully!');
+            window.location.href = 'orders.html';
+        });
+    }
+
+    if (window.location.pathname.endsWith('orders.html')) {
+        const orderList = document.getElementById('order-list');
+        orders.forEach(order => {
+            const orderItem = document.createElement('div');
+            orderItem.innerHTML = `
+                <h3>${order.name}</h3>
+                <p>$${order.price}</p>
+            `;
+            orderList.appendChild(orderItem);
+        });
+    }
+
+    const searchInput = document.getElementById('search');
+    searchInput.addEventListener('input', function () {
+        const filteredProducts = products.filter(product =>
+            product.name.toLowerCase().includes(searchInput.value.toLowerCase())
+        );
+        displayProducts(filteredProducts);
+    });
+
+    // Add filter functionality
+    const filterCategory1 = document.getElementById('filter-category1');
+    const filterCategory2 = document.getElementById('filter-category2');
+
+    filterCategory1.addEventListener('change', function () {
+        applyFilters();[
+    {
+        "id": 1,
+        "name": "Product 1",
+        "price": 19.99,
+        "image": "images/product1.jpg",
+        "category": "Category 1"
+    },
+    {
+        "id": 2,
+        "name": "Product 2",
+        "price": 29.99,
+        "image": "images/product2.jpg",
+        "category": "Category 2"
+    },
+    {
+        "id": 3,
+        "name": "Product 3",
+        "price": 39.99,
+        "image": "images/product3.jpg",
+        "category": "Category 1"
+    }
+]
+
+    });
+
+    filterCategory2.addEventListener('change', function () {
+        applyFilters();
+    });
+
+    function applyFilters() {
+        let filteredProducts = products;
+        if (filterCategory1.checked) {
+            filteredProducts = filteredProducts.filter(product => product.category === 'Category 1');
+        }
+        if (filterCategory2.checked) {
+            filteredProducts = filteredProducts.filter(product => product.category === 'Category 2');
+        }
+        displayProducts(filteredProducts);
+    }
+});
+
+
+.product-item img {
+    width: 100%;
+    height: auto;
+}
+
+.product-item h3 {
+    margin: 10px 0;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    margin-top: 20px;
+}
+
+        </nav>
+    </header>
+
+    <main>
+        <div id="order-list">
+            <!-- Order history will be dynamically loaded here -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My E-Commerce Platform</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+            <input type="text" id="expiry-date" required>
+
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" required>
+
+            <button type="submit">Place Order</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My E-Commerce Platform</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+    <main>
+        <div id="cart-items">
+            <!-- Cart items will be dynamically loaded here -->
+        </div>
+        <button id="checkout-button">Checkout</button>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My E-Commerce Platform</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+        <div id="product-list">
+            <!-- Products will be dynamically loaded here -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My E-Commerce Platform</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+├── orders.html
+└── images/
