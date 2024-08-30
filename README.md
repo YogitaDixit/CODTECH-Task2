@@ -1,3 +1,4 @@
+Name: Yogita Dixit Company: CODTECH IT SOLUTIONS ID: CT6WDS1632 Domain: Web Development Duration: August to September 2024
 # Overview
 ![Screenshot 2024-08-21 211156](https://github.com/user-attachments/assets/5f7258cb-fab0-4412-923f-5e3a6430975a)
 
